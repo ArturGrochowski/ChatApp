@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ChatApp</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="enter_code">enter_code</string>
+    <string name="send_verification_code">Send Verification COde</string>
+    <string name="logout">logout</string>
+    <string name="findUser">find user</string>
+    <string name="Verify_Code">Verify Code</string>
+    <string name="phone">phone number</string>
+    <string name="name">name</string>
+    <string name="title">title</string>
+</resources>
