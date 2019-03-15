@@ -9,4 +9,7 @@
     <string name="phone">phone number</string>
     <string name="name">name</string>
     <string name="title">title</string>
+    <string name="add_media">add media</string>
+    <string name="message">message...</string>
+    <string name="send">send</string>
 </resources>

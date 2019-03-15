@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import com.gmail.arturgrochowski.ChatActivity;
 import com.gmail.arturgrochowski.R;
-import com.gmail.arturgrochowski.Chat.ChatObject;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
