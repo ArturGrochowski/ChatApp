@@ -70,12 +70,18 @@ public class ChatActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()) {
                     String text = "", creatorID = "";
+                    ArrayList<String> mediaUrlList = new ArrayList<>();
                     if (dataSnapshot.child("text").getValue() != null)
                         text = dataSnapshot.child("text").getValue().toString();
                     if (dataSnapshot.child("creator").getValue() != null)
                         creatorID = dataSnapshot.child("creator").getValue().toString();
 
-                    MessageObject mMessage = new MessageObject(dataSnapshot.getKey(), creatorID, text);
+                    if (dataSnapshot.child("media").getChildrenCount() > 0)
+                        for (DataSnapshot mediaSnapshot : dataSnapshot.child("media").getChildren())
+                            mediaUrlList.add(mediaSnapshot.getValue().toString());
+
+
+                    MessageObject mMessage = new MessageObject(dataSnapshot.getKey(), creatorID, text, mediaUrlList);
                     messageList.add(mMessage);
                     mChatLayoutManager.scrollToPosition(messageList.size() - 1);
                     mChatAdapter.notifyDataSetChanged();
@@ -106,13 +112,17 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage() {
+        //koles ma inne id bo messageInput
         mMessage = findViewById(R.id.messagea);
-//        if(!mMessage.getText().toString().isEmpty()){
+
         String messageId = mChatDb.push().getKey();
-        DatabaseReference newMessageDb = mChatDb.child(messageId);
+        final DatabaseReference newMessageDb = mChatDb.child(messageId);
+
         mediaIdList.add(mediaId);
+
         final Map newMessageMap = new HashMap<>();
-            newMessageMap.put("creator", FirebaseAuth.getInstance().getUid());
+
+        newMessageMap.put("creator", FirebaseAuth.getInstance().getUid());
 
         if (!mMessage.getText().toString().isEmpty())
             newMessageMap.put("test", mMessage.getText().toString());
@@ -146,7 +156,6 @@ public class ChatActivity extends AppCompatActivity {
                 updateDatabaseWithNewMessage(newMessageDb, newMessageMap);
         }
 
-//        }
     }
 
     private void updateDatabaseWithNewMessage(DatabaseReference newMessageDb, Map newMessageMap) {

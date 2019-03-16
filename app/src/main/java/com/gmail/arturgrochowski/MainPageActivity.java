@@ -3,24 +3,24 @@ package com.gmail.arturgrochowski;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.constraint.solver.widgets.Snapshot;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.gmail.arturgrochowski.Chat.ChatListAdapter;
 import com.gmail.arturgrochowski.Chat.ChatObject;
-import com.gmail.arturgrochowski.User.UserObject;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 
@@ -38,11 +38,27 @@ public class MainPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
 
-        Button mLogout = findViewById(R.id.logout);
-        Button mFindUser = findViewById(R.id.findUser);
+
+        OneSignal.startInit(this).init();
+        OneSignal.setSubscription(true);
+        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+            @Override
+            public void idsAvailable(String userId, String registrationId) {
+                FirebaseDatabase.getInstance().getReference().child("user").child(FirebaseAuth.getInstance().getUid()).child("notificationKey").setValue(userId);
+            }
+        });
+
+        OneSignal.setInFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification);
+
+        Fresco.initialize(this);
+
+
+        Button mLogout = findViewById(R.id.logout_button);
+        Button mFindUser = findViewById(R.id.findUser_button);
 
         mFindUser.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), FindUserActivity.class)));
         mLogout.setOnClickListener(v -> {
+            OneSignal.setSubscription(false);
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

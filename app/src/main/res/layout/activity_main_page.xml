@@ -25,18 +25,18 @@
         app:layout_constraintVertical_bias="0.038">
 
         <Button
-            android:id="@+id/findUser"
+            android:id="@+id/findUser_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="wrap_content"
-            android:text="find user" />
+            android:layout_weight="1"
+            android:text="@string/find_user_button" />
 
         <Button
-            android:id="@+id/logout"
+            android:id="@+id/logout_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="wrap_content"
-            android:text="logout" />
+            android:layout_weight="1"
+            android:text="@string/logout_button" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
